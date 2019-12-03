@@ -21,6 +21,7 @@ int main(void)
     
     //Initialize texts
     Font font;
+    bool lost = false;
     
     // I code this on my Mac so if you're using Microsoft or other environment
     // you can just use is line of code
@@ -56,7 +57,7 @@ int main(void)
     Player play(2);
     SystemOfEnemy enemy(bullets.getList(), bullets.getNum(), &window);
     
-    while (window.isOpen( ))
+    while (window.isOpen( ) && lost == true)
     {
         Event event;
         
@@ -102,6 +103,20 @@ int main(void)
         window.display();
         
         //Checking
+        if(play.Lost(enemy.getEnemyList()))
+        {
+            enemy.resetEnemy();
+            bullets.clearBullets();
+            lost = true;
+            
+            
+        }
+       /* else
+        {
+            enemy.resetEnemy();
+            bullets.clearBullets();
+            //return 0;
+        }*/
     }
     
     return 0;
