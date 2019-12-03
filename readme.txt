@@ -1,4 +1,4 @@
-GROUP MEMBERS: Hailey Le, Natalie-Ann Clevenger
+GROUP MEMBERS: Thao (Hailey) Le, Natalie-Ann Clevenger
 LAB TAs: Tom, Dayem
 DATE: 12/04/2019
 
