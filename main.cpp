@@ -53,7 +53,8 @@ int main(void)
     }
     
     BulletSystem bullets;
-    Player play(30);
+    Player play(2);
+    SystemOfEnemy enemy(bullets.getList(), bullets.getNum(), &window);
     
     while (window.isOpen( ))
     {
@@ -68,21 +69,37 @@ int main(void)
                 window.close();
             }
         }
+        
         //Control check
+        if (Keyboard::isKeyPressed(Keyboard::Left))
+        {
+            // left key is pressed: move our character
+            play.moveLeft();
+        }
+        else if (Keyboard::isKeyPressed(Keyboard::Right))
+        {
+            play.moveRight();
+        }
+        else if (Keyboard::isKeyPressed(Keyboard::Space))
+        {
+            bullets.addBullet(play.getPosition());
+        }
         
         
         // update the game
+        enemy.update(&window);
         play.updateSpeed();
         bullets.updateCount();
+        
         
         // draw objects here
         window.clear(Color::Transparent);
         window.draw(background);
         bullets.drawBullet(window);
         play.drawPlayer(window);
+        enemy.drawEnemies(window);
         
-        
-        window.display( );
+        window.display();
         
         //Checking
     }
