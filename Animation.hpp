@@ -29,10 +29,24 @@ private:
     RenderWindow *window = nullptr;
 public:
     Animation(Sprite *b, RenderWindow *w);
-    int getPosition();
+    //Vector2f getPosition();
     void drawAni();
-   // bool
+    bool updateAni();
+    //bool isChanged();
     
+};
+
+class Gestion
+{
+private:
+    std::vector<Animation*> Animated;
+    RenderWindow *window = nullptr;
+public:
+    Gestion(RenderWindow *w = nullptr);
+    void clearAnimation();
+    void updateAnimation();
+    void addAnimation();
+    void drawAnimation();
 };
 
 #endif /* Animation_hpp */
