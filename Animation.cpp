@@ -59,4 +59,38 @@ bool Animation::updateAni()
     }
 }
 
-//bool isChanged();
+Gestion::Gestion(RenderWindow *w)
+{
+    window = w;
+}
+
+void Gestion::clearAnimation()
+{
+    Animated.clear();
+}
+
+void Gestion::updateAnimation()
+{
+    for(int i = 0; i < Animated.size(); i++)
+    {
+        if(!Animated[i]->updateAni())
+        {
+            delete(Animated[i]);
+            Animated.erase(Animated.begin() + i);
+        }
+    }
+}
+
+void Gestion::addAnimation(Sprite*body)
+{
+    Animation *a = new Animation(body, window);
+    Animated.push_back(a); //This is cool lol it's like push() but at the back
+}
+
+void Gestion::drawAnimation()
+{
+    for(int i = 0; i < Animated.size(); i++)
+    {
+        Animated[i]->drawAni();
+    }
+}

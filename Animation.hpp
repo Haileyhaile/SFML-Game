@@ -45,7 +45,7 @@ public:
     Gestion(RenderWindow *w = nullptr);
     void clearAnimation();
     void updateAnimation();
-    void addAnimation();
+    void addAnimation(Sprite*);
     void drawAnimation();
 };
 
