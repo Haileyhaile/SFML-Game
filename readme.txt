@@ -7,3 +7,5 @@ OBJECTIVE: Shot as many space invaders as you can and don't let them touch/hit y
 RULES:
 	- Don't let the incoming invaders touch/hit you or you lose!
 	- You can only move your spaceship left and right and shot straight forward
+	
+[ NO THIS IS NOT SPACE INVADERS ]
