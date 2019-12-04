@@ -10,7 +10,7 @@
 #define Player_hpp
 
 #include "Commons.hpp"
-
+#include "Enemy.hpp"
 struct outOfScreen
 {
     bool left = false;
@@ -27,7 +27,7 @@ public:
     void moveRight();
     void drawPlayer(RenderWindow &window);
     void updateSpeed();
-    //bool Lost(std::vector);
+    bool Lost(std::vector<Enemy*>* list);
     Vector2f getPosition();
     FloatRect getBound();
     

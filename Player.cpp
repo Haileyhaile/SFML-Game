@@ -13,7 +13,7 @@ Player::Player(int m)
 {
     max = m;
     Pshape.setPosition(380.0f, 510.0f);
-    Pshape.setScale(0.05f, 0.05f);
+    Pshape.setScale(0.06f, 0.06f);
     if(Ptexture.loadFromFile("/Users/phuongthaolee/Projects/Resources/SpaceShuttles.png"))
     {
         Pshape.setTexture(Ptexture);
@@ -57,7 +57,7 @@ void Player::moveLeft()
         {
             current++;
         }
-        Pshape.move(current - 2*current, 0.0f);
+        Pshape.move(current - 2 * current, 0.0f);
     }
 }
 
@@ -113,3 +113,16 @@ outOfScreen Player::isOut()
 // Check if the player is dead
 // intersects(Pshape.getGlobalBounds()) ?
 // Return true or false (type Bool)
+bool Player::Lost(std::vector<Enemy*>* list)
+{
+    for(int i = 0; i < list->size(); i++)
+    {
+        if(((*list)[i]->getBound().intersects(Pshape.getGlobalBounds())))
+        {
+            list->erase(list->begin() + i);
+            delete ((*list)[i]);
+            return true;
+        }
+    }
+    return false;
+}
