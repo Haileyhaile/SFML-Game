@@ -13,16 +13,20 @@
 #include "Commons.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "Score.hpp"
+#include "Menu.hpp"
+#include "Window.hpp"
 
 int main(void)
 {
     srand(time(NULL));
     RenderWindow window(VideoMode( 800, 600 ), "Space Shooter" );
-    
+    RenderWindow menu(VideoMode( 800, 600 ), "Space Shooter Menu");
+    RenderWindow death(VideoMode( 800, 600 ), "Space Shooter Death");
     //Initialize texts
+    //bool lost;
     Font font;
-    bool lost = true; 
-    
+    WindowGestion all(menu, window, death);
     // I code this on my Mac so if you're using Microsoft or other environment
     // you can just use is line of code
     // font.loadFromFile("Resources/#9Slide03ArimaMaduraiMedium.tff");
@@ -53,90 +57,83 @@ int main(void)
       background.setScale(ScaleX, ScaleY);      //Set scale.
     }
     
-    Text Maintxt, Subtxt;
-	string main = "WELCOME TO SPACE SHOOTER";
-	string sub = "Press Return to Start the Game or Esc to Exit.";
-
-	Maintxt.setFont(font);
-	Maintxt.setFillColor(Color::White);
-	Maintxt.setCharacterSize(40);
-	Maintxt.setPosition(150.0, 150.0);
-	Maintxt.setString(main);
-
-	Subtxt.setFont(font);
-	Subtxt.setFillColor(Color::White);
-	Subtxt.setCharacterSize(30);
-	Subtxt.setPosition(270.0, 220.0);
-	Subtxt.setString(sub);
+    if(!all.Show(StartWindow))
+    {
+        all.~WindowGestion();
+        return 0;
+    }
+    else
+    {
+        all.Show(PlayWindow);
+    }
     
     BulletSystem bullets;
-    Player play(2);
+    Player play(18);
     SystemOfEnemy enemy(bullets.getList(), bullets.getNum(), &window);
+    Score playerScore(enemy.getKillNum());
     
-    while (window.isOpen( ) && lost == true)
-    {
-        Event event;
-        
-        // handle all events
-        while (window.pollEvent(event))
+        while (window.isOpen( ))
         {
+            Event event;
             
+            // handle all events
+            while (window.pollEvent(event))
+            {
+                
             if(event.type == Event::Closed)
             {
                 window.close();
             }
+            }
+    //display menu
+            if (Keyboard::isKeyPressed(Keyboard::Left))
+            {
+                // left key is pressed: move our character
+                play.moveLeft();
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::Right))
+            {
+                play.moveRight();
+            }
+            else if (Keyboard::isKeyPressed(Keyboard::Space))
+            {
+                bullets.addBullet(play.getPosition());
+            }
+
+                // update the game
+            play.updateSpeed();
+            bullets.updateCount();
+            enemy.update(&window);
+            playerScore.updateScore();
+
+                // draw objects here
+            window.clear(Color::Transparent);
+            window.draw(background);
+            bullets.drawBullet(window);
+            play.drawPlayer(window);
+            enemy.drawEnemies(window);
+            playerScore.drawMessage(window);
+            
+            //Displaying on screen
+            window.display();
+            
+            if (play.Lost(enemy.getEnemyList()))
+            {
+                if(all.Show(DeathScreenWindow))
+                {
+                enemy.resetEnemy();
+                bullets.clearBullets();
+                all.Show(PlayWindow);
+                //lost = true;
+                }
+                else
+                {
+                enemy.resetEnemy();
+                bullets.clearBullets();
+                all.~WindowGestion();
+                return 0;
+                }
+            }
         }
-//display menu
-		window.draw(Maintxt);
-		window.draw(Subtxt);
-		window.display();
-		if (Keyboard::isKeyPressed(Keyboard::Return))
-		{
-			//Control check
-			if (Keyboard::isKeyPressed(Keyboard::Left))
-			{
-				// left key is pressed: move our character
-				play.moveLeft();
-			}
-			else if (Keyboard::isKeyPressed(Keyboard::Right))
-			{
-				play.moveRight();
-			}
-			else if (Keyboard::isKeyPressed(Keyboard::Space))
-			{
-				bullets.addBullet(play.getPosition());
-			}
-
-			// update the game
-			play.updateSpeed();
-			bullets.updateCount();
-
-			// draw objects here
-			window.clear(Color::Transparent);
-			window.draw(background);
-
-			bullets.drawBullet(window);
-			play.drawPlayer(window);
-
-			window.display();
-
-			if (play.Lost(enemy.getEnemyList()))
-			{
-				enemy.resetEnemy();
-				bullets.clearBullets();
-				lost = true;
-			}
-			/* else
-			{
-			enemy.resetEnemy();
-			bullets.clearBullets();
-			//return 0;
-			}*/
-		}
-		else if (Keyboard::isKeyPressed(Keyboard::Escape))
-		{
-			lost = false;
-		}
-    
-    return 0;
+        return 0;
 }
