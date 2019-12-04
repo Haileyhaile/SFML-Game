@@ -21,6 +21,8 @@ Enemy::Enemy()
 {
     //sets image of enemies to Enemy.png by loading the image to etexture,
     //then seting the texture of the enemy sprite to etexture
+    //Please use this line if you're not using Xcode on MacOS
+    // etexture.loadFromFile("Resources/Enemy.png");
     if (etexture.loadFromFile("/Users/phuongthaolee/Projects/Resources/Enemy.png"))
         esprite.setTexture(etexture);
     //error checking for if image isn't found -> uses red square instead

@@ -9,7 +9,7 @@
 #ifndef Bullet_hpp
 #define Bullet_hpp
 
-#define BULLET_SPEED 20
+#define BULLET_SPEED 10
 #define BULLET_AMOUNT 1000
 
 

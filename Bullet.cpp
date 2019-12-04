@@ -12,16 +12,17 @@ Bullet:: Bullet(Vector2f playerPosition)
 {
     VertexArray coord(Triangles, 3);
     
-    coord[0].position = Vector2f(playerPosition.x + 25.0, playerPosition.y + 25.0);
+    coord[0].position = Vector2f(playerPosition.x + 29.0, playerPosition.y + 29.0);
      coord[1].position = Vector2f(playerPosition.x + 30.0, playerPosition.y + 30.0);
-     coord[2].position = Vector2f(playerPosition.x + 35.0, playerPosition.y + 35.0);
+     coord[2].position = Vector2f(playerPosition.x + 28.0, playerPosition.y + 28.0);
     
-    coord.resize(5);
+    coord.resize(3);
     
     for(unsigned int i = 0; i < 2; i++)
     {
         coord[i].color = Color::Yellow;
     }
+    
     bullets = coord;
 }
 
@@ -34,8 +35,8 @@ bool Bullet::update()
 {
     for(int i = 0; i< 1 + 1; i++)
     {
-        bullets[i] = Vector2f(bullets[i].position.x, bullets[i].position.y);
-        if(bullets[i].position.y <= 0 || bullets[i].position.y > 600)
+        bullets[i] = Vector2f(bullets[i].position.x, bullets[i].position.y - BULLET_SPEED);
+        if(bullets[i].position.y <= 0 || bullets[i].position.y >= 600)
             return true;
     }
     return false;

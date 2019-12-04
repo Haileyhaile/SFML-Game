@@ -11,6 +11,8 @@
 Menu::Menu(String main, String sub)
 {
     /* Setting Up Texts and Fonts */
+    //Please use this line if you're not using Xcode on MacOS
+    // MainFont.loadFromFile("Resources/ArimaMaduraiMedium.ttf");
     MainFont.loadFromFile("/Users/phuongthaolee/Projects/Resources/ArimaMaduraiMedium.ttf");
 
     MainText.setFont(MainFont);

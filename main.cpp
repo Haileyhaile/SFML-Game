@@ -29,7 +29,7 @@ int main(void)
     WindowGestion all(menu, window, death);
     // I code this on my Mac so if you're using Microsoft or other environment
     // you can just use is line of code
-    // font.loadFromFile("Resources/#9Slide03ArimaMaduraiMedium.tff");
+    // font.loadFromFile("Resources/#ArimaMaduraiMedium.tff");
     font.loadFromFile("/Users/phuongthaolee/Projects/Resources/ArimaMaduraiMedium.ttf");
     
     Texture BackgroundTexture;

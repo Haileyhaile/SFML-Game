@@ -15,9 +15,12 @@ Animation::Animation(Sprite *b, RenderWindow *w)
     Body = b;
     window = w;
     states = 0;
+    //Please use this line if you're not using Xcode on MacOS
+    // text.loadFromFile("Resources/Explosion.png");
     tex.loadFromFile("/Users/phuongthaolee/Projects/Resources/Explosion.png");
     Body->setTexture(tex);
     Body->setTextureRect(IntRect(curX, curY, WIDTH, HEIGHT));
+    Body->setScale(1.0f, 1.0f);
 }
 
 //int getPosition();
