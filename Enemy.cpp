@@ -11,27 +11,29 @@ unsigned int numWave = 0;
 
 int getRandomNum(int max)
 {
-	//gets a random number no greater than the max
-	return rand() % max;
+    //gets a random number no greater than the max
+    return rand() % max;
 }
 
 /* ------------------------ ENEMY CLASS ------------------------ */
 
 Enemy::Enemy()
 {
-	//sets image of enemies to Enemy.png by loading the image to etexture,
-	//then seting the texture of the enemy sprite to etexture
-	if (etexture.loadFromFile("Resources/Enemy.png")) 
-		esprite.setTexture(etexture);
-	//error checking for if image isn't found -> uses red square instead
-	else 
-	{
-		esprite.setColor(Color::Red);
-		esprite.setScale(20.0, 20.0);
-		cout << "Can't open Enemy texture, using default values." << endl;
-	}
-	//sets position of enemy sprite 
-	esprite.setPosition(Vector2f(getRandomNum(800), 50.0));
+    //sets image of enemies to Enemy.png by loading the image to etexture,
+    //then seting the texture of the enemy sprite to etexture
+    if (etexture.loadFromFile("/Users/phuongthaolee/Projects/Resources/Enemy.png"))
+        esprite.setTexture(etexture);
+    //error checking for if image isn't found -> uses red square instead
+    
+    else
+    {
+        esprite.setColor(Color::Red);
+        esprite.setScale(0.3, 0.3);
+        cout << "Can't open Enemy texture, using default values." << endl;
+    }
+    //sets position of enemy sprite
+    esprite.setScale(0.3, 0.3);
+    esprite.setPosition(Vector2f(getRandomNum(800), 50.0));
 }
 
 Enemy::~Enemy()
@@ -41,45 +43,45 @@ Enemy::~Enemy()
 
 void Enemy::update()
 {
-	//updates difficulty level of the game/speed of the enemies
-	diff.updateDiff();
-	esprite.move(0.0, diff.getSpeed());
+    //updates difficulty level of the game/speed of the enemies
+    diff.updateDiff();
+    esprite.move(0.0, diff.getSpeed());
 }
 
 FloatRect Enemy::getBound()
 {
-	//returns bounds of the game window
-	return esprite.getGlobalBounds();
+    //returns bounds of the game window
+    return esprite.getGlobalBounds();
 }
 
 Vector2f Enemy::getPosition()
 {
-	//returns the position of the enemy sprite
-	return esprite.getPosition();
+    //returns the position of the enemy sprite
+    return esprite.getPosition();
 }
 
 void Enemy::drawEnemy(RenderWindow &window)
 {
-	//draws the enemy in the window
-	window.draw(esprite);
+    //draws the enemy in the window
+    window.draw(esprite);
 }
 
 Sprite* Enemy::getBody()
 {
-	//returns the enemy sprite
-	return &esprite;
+    //returns the enemy sprite
+    return &esprite;
 }
 
 /* ------------------------ DIFFICULTY CLASS ------------------------ */
 
 Difficulty::Difficulty()
-{	
-	//if wave num is > than zero, wave of enemies is subtracted
-	if (numWave > 0)
-		numEnemyWave = numWave - 1;
-	else
-		numEnemyWave = numWave;
-	currentSpeed += 2;
+{
+    //if wave num is > than zero, wave of enemies is subtracted
+    if (numWave > 0)
+        numEnemyWave = numWave - 1;
+    else
+        numEnemyWave = numWave;
+    currentSpeed += 2;
 }
 
 Difficulty::~Difficulty()
@@ -89,166 +91,178 @@ Difficulty::~Difficulty()
 
 void Difficulty::updateDiff()
 {
-	//if wave of enemies is greater than 0
-	if (numWave > numEnemyWave)
-	{
-		//increase wave number by one
-		numEnemyWave++;
-		//if wave num is less than 10, difficulty increases but not speed
-		if (numEnemyWave < 10)
-		{
-			currentDiff++;
-			currentSpeed += 0;
-		}
-		//if wave num is between 10 and 20, difficulty increases and speed increases by 2
-		else if (numEnemyWave > 10 && numEnemyWave < 20)
-		{
-			currentDiff++;
-			currentSpeed += 2;
-		}
-		//else, difficulty increases and speed increases by 5
-		else
-		{
-			currentDiff++;
-			currentSpeed += 5;
-		}
-	}
+    //if wave of enemies is greater than 0
+    if (numWave > numEnemyWave)
+    {
+        //increase wave number by one
+        numEnemyWave++;
+        //if wave num is less than 8, difficulty increases but not speed
+        if (numEnemyWave < 4)
+        {
+            currentDiff++;
+            currentSpeed += 0;
+        }
+        //if wave num is between 8 and 12, difficulty increases and speed increases by 0.2
+        else if (numEnemyWave > 4 && numEnemyWave < 6)
+        {
+            currentDiff++;
+            currentSpeed += 1;
+        }
+        //else, difficulty increases and speed increases by 0.5
+        else
+        {
+            currentSpeed += 3;
+        }
+    }
 }
 
 int Difficulty::getDiff()
 {
-	//returns the current difficulty
-	return currentDiff;
+    //returns the current difficulty
+    return currentDiff;
 }
 
 int Difficulty::getSpeed()
 {
-	//returns the current speed
-	return currentSpeed;
+    //returns the current speed
+    return currentSpeed;
 }
 
 /* ------------------------ SYSTEM OF ENEMY CLASS ------------------------ */
 
 SystemOfEnemy::SystemOfEnemy(vector<Bullet>* bulletList, unsigned int* bulletCount, RenderWindow *window)
 {
-	//initilizes the bullet list and bullet count of the class
-	bList = bulletList;
-	pBulletCount = bulletCount;
+    //initilizes the bullet list and bullet count of the class
+    bList = bulletList;
+    pBulletCount = bulletCount;
 
-	//gesion = management??
-	Gestion a(window);
-	animation = a;
+    //gesion = management??
+    Gestion a(window);
+    animation = a;
+}
+
+SystemOfEnemy::~SystemOfEnemy()
+{
+    
+}
+
+bool SystemOfEnemy::isCollision(FloatRect a, Vector2f b)
+{
+    if(a.contains(b))
+        return true;
+    else
+        return false;
 }
 
 void SystemOfEnemy::update(RenderWindow* window)
 {
-	//loop checks if enemy is out of the window or was shot
-	//if enemy was shot -> launch death animation/explosion
-	//else enemy leaves the window and is deleted
-	for (unsigned int i = 0; i < eList.size(); i++)
-	{
-		for (unsigned j = 0; j < bList->size(); j++)
-		{
-			if (isCollision(eList[i]->getBound(), (*bList)[j].getPosition()))
-			{
-				killCount++;
-				deleteEnemy(eList[i], i, Shot, window);
-				numEnemy = eList.size();
+    //loop checks if enemy is out of the window or was shot
+    //if enemy was shot -> launch death animation/explosion
+    //else enemy leaves the window and is deleted
+    for (unsigned int i = 0; i < eList.size(); i++)
+    {
+        for (unsigned j = 0; j < bList->size(); j++)
+        {
+            if (isCollision(eList[i]->getBound(), (*bList)[j].getPosition()))
+            {
+                killCount++;
+                deleteEnemy(eList[i], i, Shot, window);
+                numEnemy = eList.size();
 
-				bList->erase(bList->begin() + j);
-				*pBulletCount = bList->size();
+                bList->erase(bList->begin() + j);
+                *pBulletCount = bList->size();
 
-				return;
-			}
-		}
-	}
-	for (unsigned int i = 0; i < eList.size(); i++)
-	{
-		eList[i]->update();
-		
-		if (eList[i]->getPosition().y >= 600)
-		{
-			deleteEnemy(eList[i], i, OutofWindow, window);
-			numEnemy = eList.size();
-			return;
-		}
-	}
-	//if there are no enemies are left 
-	//-> create new ones according to the wave number
-	if (numEnemy <= 0)
-	{
-		numWave++;
-		if (numWave * 2 > ENEMYLIMIT)
-			createEnemy(ENEMYLIMIT);
-		else
-			createEnemy(numWave * 2);
-	}
-	animation.updateAnimation();
+                return;
+            }
+        }
+    }
+    for (unsigned int i = 0; i < eList.size(); i++)
+    {
+        eList[i]->update();
+        
+        if (eList[i]->getPosition().y >= 600)
+        {
+            deleteEnemy(eList[i], i, OutofWindow, window);
+            numEnemy = eList.size();
+            return;
+        }
+    }
+    //if there are no enemies are left
+    //-> create new ones according to the wave number
+    if (numEnemy <= 0)
+    {
+        numWave++;
+        if (numWave * 2 > ENEMYLIMIT)
+            createEnemy(ENEMYLIMIT);
+        else
+            createEnemy(numWave * 2);
+    }
+    animation.updateAnimation();
 }
 
 void SystemOfEnemy::createEnemy(unsigned int num)
 {
-	//create new enemies
-	for (unsigned int i = 0; i < num; i++)
-	{
-		Enemy* e = new(Enemy);
-		eList.push_back(e);
-	}
+    //create new enemies
+    for (unsigned int i = 0; i < num; i++)
+    {
+        Enemy* e = new(Enemy);
+        eList.push_back(e);
+    }
 }
 
 void SystemOfEnemy::deleteEnemy(Enemy* e, unsigned int position, reasonForKill reason, RenderWindow* window)
 {
-	//if enemy exits window -> deletes enemy once it leaves screen
-	if (reason == OutofWindow)
-	{
-		eList.erase(eList.begin() + position);
-		delete(e);
-	}
-	//if enemy was shot
-	else
-	{
-		//--- addAnimation DIDN'T HAVE PARAMETER!! ---
-		animation.addAnimation(e->getBody());
-		eList.erase(eList.begin() + position);
-	}
+    //if enemy exits window -> deletes enemy once it leaves screen
+    if (reason == OutofWindow)
+    {
+        eList.erase(eList.begin() + position);
+        delete(e);
+    }
+    //if enemy was shot
+    else
+    {
+        //--- addAnimation DIDN'T HAVE PARAMETER!! ---
+        animation.addAnimation(e->getBody());
+        eList.erase(eList.begin() + position);
+    }
 }
 
 void SystemOfEnemy::drawEnemies(RenderWindow &window)
 {
-	//draws the enemies to the window
-	for (unsigned int i = 0; i < eList.size(); i++)
-	{
-		eList[i]->drawEnemy(window);
-		numEnemy++;
-	}
-	animation.drawAnimation();
+    //draws the enemies to the window
+    for (unsigned int i = 0; i < eList.size(); i++)
+    {
+        eList[i]->drawEnemy(window);
+        numEnemy++;
+    }
+    animation.drawAnimation();
 }
 
 void SystemOfEnemy::resetEnemy()
 {
-	//resets variables and clears animations
-	killCount = 0;
-	numWave = 0;
-	numEnemy = 0;
+    //resets variables and clears animations
+    killCount = 0;
+    numWave = 0;
+    numEnemy = 0;
 
-	animation.clearAnimation();
-	eList.clear();
+    animation.clearAnimation();
+    eList.clear();
 }
 
 int SystemOfEnemy::getNumEnemy()
 {
-	//return number of enemies
-	return numEnemy;
+    //return number of enemies
+    return numEnemy;
 }
 
 unsigned int* SystemOfEnemy::getKillNum()
 {
-	//returns kill count
-	return &killCount;
+    //returns kill count
+    return &killCount;
 }
 
 vector<Enemy*>* SystemOfEnemy::getEnemyList()
 {
-	//returns enemy list
-	return &eList;
+    //returns enemy list
+    return &eList;
 }
