@@ -5,6 +5,9 @@
 //  Created by Hailey Le on 11/21/19.
 //  Copyright © 2019 Phuong Thao Le. All rights reserved.
 //
+
+//  I used some of the sample codes from https://www.sfml-dev.org/tutorials/2.5/
+
 //  Hi,
 //  I coded this game using Xcode on Mac so if you're using other environments
 //  Please read my comments to optimize the codes
@@ -30,7 +33,15 @@ int main(void)
     // I code this on my Mac so if you're using Microsoft or other environment
     // you can just use is line of code
     // font.loadFromFile("Resources/#ArimaMaduraiMedium.tff");
-    font.loadFromFile("/Users/phuongthaolee/Projects/Resources/ArimaMaduraiMedium.ttf");
+    if(!font.loadFromFile("/Users/phuongthaolee/Projects/Resources/ArimaMaduraiMedium.ttf"))
+        return -1;
+    
+    SoundBuffer buffer;
+    if(!buffer.loadFromFile("/Users/phuongthaolee/Projects/Resources/Gameloop.wav"))
+        return -1;
+    Sound sound;
+    sound.setBuffer(buffer);
+    sound.play();
     
     Texture BackgroundTexture;
     Sprite background;
@@ -68,7 +79,7 @@ int main(void)
     }
     
     BulletSystem bullets;
-    Player play(18);
+    Player play(25);
     SystemOfEnemy enemy(bullets.getList(), bullets.getNum(), &window);
     Score playerScore(enemy.getKillNum());
     
@@ -124,6 +135,7 @@ int main(void)
                 enemy.resetEnemy();
                 bullets.clearBullets();
                 all.Show(PlayWindow);
+                sound.play();
                 //lost = true;
                 }
                 else
