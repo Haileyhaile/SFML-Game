@@ -1,22 +1,27 @@
-#ifndef MENUS_H
-#define MENUS_H
+//
+//  Menu.hpp
+//  SFML
+//
+//  Created by Hailey Le on 12/3/19.
+//  Copyright © 2019 Phuong Thao Le. All rights reserved.
+//
 
-#include <SFML/Graphics.hpp>
+#ifndef Menu_hpp
+#define Menu_hpp
+
+#include "Commons.hpp"
 #include <string>
-using namespace std;
-using namespace sf;
-
 class Menu
 {
 public:
-	Menu(string main, string sub);
-	void drawMenu(RenderWindow &window);
-	bool doMenu(Menu menu, RenderWindow &window);
+    Menu(String main, String sub);
+    void drawMenu(RenderWindow &window);
+    bool doMenu(Menu menu, RenderWindow &window);
 
 private:
-	Font MainFont;
-	Text MainText;
-	Text SecondText;
+    Font MainFont;
+    Text MainText;
+    Text SecondText;
 };
 
-#endif
+#endif /* Menu_hpp */
