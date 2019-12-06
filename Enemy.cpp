@@ -30,11 +30,11 @@ Enemy::Enemy()
     else
     {
         esprite.setColor(Color::Red);
-        esprite.setScale(0.3, 0.3);
+        esprite.setScale(0.25, 0.25);
         cout << "Can't open Enemy texture, using default values." << endl;
     }
     //sets position of enemy sprite
-    esprite.setScale(0.3, 0.3);
+    esprite.setScale(0.25, 0.25);
     esprite.setPosition(Vector2f(getRandomNum(800), 50.0));
 }
 
@@ -98,19 +98,19 @@ void Difficulty::updateDiff()
     {
         //increase wave number by one
         numEnemyWave++;
-        //if wave num is less than 8, difficulty increases but not speed
-        if (numEnemyWave < 4)
+        //if wave num is less than 3, difficulty increases but not speed
+        if (numEnemyWave < 3)
         {
             currentDiff++;
             currentSpeed += 0;
         }
-        //if wave num is between 8 and 12, difficulty increases and speed increases by 0.2
-        else if (numEnemyWave > 4 && numEnemyWave < 6)
+        //if wave num is between 3 and 6, difficulty increases and speed increases by 1
+        else if (numEnemyWave > 3 && numEnemyWave < 6)
         {
             currentDiff++;
             currentSpeed += 1;
         }
-        //else, difficulty increases and speed increases by 0.5
+        //else, speed increases by 3
         else
         {
             currentSpeed += 3;
@@ -178,7 +178,7 @@ void SystemOfEnemy::update(RenderWindow* window)
             }
         }
     }
-    for (unsigned int i = 0; i < eList.size(); i++)
+    for (int i = 0; i < eList.size(); i++)
     {
         eList[i]->update();
         
@@ -205,7 +205,7 @@ void SystemOfEnemy::update(RenderWindow* window)
 void SystemOfEnemy::createEnemy(unsigned int num)
 {
     //create new enemies
-    for (unsigned int i = 0; i < num; i++)
+    for (int i = 0; i < num; i++)
     {
         Enemy* e = new(Enemy);
         eList.push_back(e);
@@ -232,7 +232,7 @@ void SystemOfEnemy::deleteEnemy(Enemy* e, unsigned int position, reasonForKill r
 void SystemOfEnemy::drawEnemies(RenderWindow &window)
 {
     //draws the enemies to the window
-    for (unsigned int i = 0; i < eList.size(); i++)
+    for (int i = 0; i < eList.size(); i++)
     {
         eList[i]->drawEnemy(window);
         numEnemy++;

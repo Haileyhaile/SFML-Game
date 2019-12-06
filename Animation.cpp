@@ -23,7 +23,6 @@ Animation::Animation(Sprite *b, RenderWindow *w)
     Body->setScale(1.0f, 1.0f);
 }
 
-//int getPosition();
 
 void Animation::drawAni()
 {
@@ -45,6 +44,7 @@ bool Animation::updateAni()
             curX = 0;
             curY++;
             Body->setTextureRect(IntRect(curX * WIDTH, curY * HEIGHT, HEIGHT, WIDTH));
+            //Body->setScale(1.0f, 1.0f);
             return true;
         }
         else
@@ -52,7 +52,7 @@ bool Animation::updateAni()
             AniClock.restart();
             curX++;
             Body->setTextureRect(IntRect(curX * WIDTH, curY * HEIGHT, HEIGHT, WIDTH));
-            
+            //Body->setScale(1.0f, 1.0f);
             return true;
         }
     }

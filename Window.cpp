@@ -108,7 +108,7 @@ bool WindowGestion::Show(WindowType type)
         Subtxt.setPosition(270.0, 220.0);
         Subtxt.setString(sub);
         
-        Menu menu("YOU LOSE!", "Press Return to play\nPress Escape to quit.");
+        Menu menu("\tYOU LOSE!", "Press Return to play\nPress Escape to quit.");
 
         if (menu.doMenu(menu, *DeathWindow))
             return true;

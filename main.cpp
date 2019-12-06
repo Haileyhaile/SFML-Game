@@ -6,7 +6,7 @@
 //  Copyright © 2019 Phuong Thao Le. All rights reserved.
 //
 
-//  I used some of the sample codes from https://www.sfml-dev.org/tutorials/2.5/
+//  We used some of the sample codes from https://www.sfml-dev.org/tutorials/2.5/
 
 //  Hi,
 //  I coded this game using Xcode on Mac so if you're using other environments
@@ -26,10 +26,13 @@ int main(void)
     RenderWindow window(VideoMode( 800, 600 ), "Space Shooter" );
     RenderWindow menu(VideoMode( 800, 600 ), "Space Shooter Menu");
     RenderWindow death(VideoMode( 800, 600 ), "Space Shooter Death");
+    
     //Initialize texts
-    //bool lost;
     Font font;
+    
+    //bool lost;
     WindowGestion all(menu, window, death);
+    
     // I code this on my Mac so if you're using Microsoft or other environment
     // you can just use is line of code
     // font.loadFromFile("Resources/#ArimaMaduraiMedium.tff");
@@ -79,7 +82,7 @@ int main(void)
     }
     
     BulletSystem bullets;
-    Player play(25);
+    Player play(30);
     SystemOfEnemy enemy(bullets.getList(), bullets.getNum(), &window);
     Score playerScore(enemy.getKillNum());
     
